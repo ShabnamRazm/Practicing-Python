@@ -1,0 +1,167 @@
+courses=['History','Math','Physics','CompSci']
+
+print(courses[-1])  #CompSci
+
+#Add an item to the end of our list: APPEND
+courses.append('Art')
+print(courses)  #['History','Math','Physics','CompSci','Art']
+
+#Add an item to a specific location of our list: INSERT(take 2 arguments: The index, Value)
+courses.insert(0,'Art')  
+print(courses)  #['Art','History','Math','Physics','CompSci']
+
+#When we have multiple values that we want to add to our list: EXTEND
+courses_2=['Art','Education']
+#! courses.insert(0,courses_2)  [['Art','Education'],'History','Math','Physics','CompSci']
+#! print(courses[0])  ['Art','Education']
+#! courses.append(courses_2)  ['History','Math','Physics','CompSci',['Art','Education']]
+courses.extend(courses_2)
+print(courses)  #['History','Math','Physics','CompSci','Art','Education']
+
+#ROMOVE: remove  OR  pop
+courses.remove('Math')
+courses.pop()  #by default: Remove the last value of our list
+popped=courses.pop()
+print(popped)  #CompSci
+
+#SORT our list:
+courses.reverse()
+print(courses)
+
+courses.sort()  #sort method: in alphabatical order or ascending order FOR NUMBERS
+print(courses)
+courses.sort(reverse=True)  #Descending order
+
+#There is also a way that we can get a sorted version of our list without altering the original list: Sorted Function==> doesn't sort the list in place, it returns a sorted version of the list
+courses=['History','Math','Physics','CompSci']
+sorted_courses=sorted(courses)
+print(sorted_courses)
+
+#if we want to find the index of a certain value:
+print(courses.index(CompSci))  #3
+#if we want to simple check if the value was in our list and simple get back a T/F result:
+print('Art' in courses)  #False
+
+nums=[1,5,2,4,3]
+print(min(nums))  #1
+print(max(nums))  #5
+print(sum(nums))  #15
+print(3 in nums)  #True
+
+courses=['History','Math','Physics','CompSci']
+for course in courses:
+  print(course)
+#we can access the index and the value by using *enumerate*==>returns: index & value
+courses=['History','Math','Physics','CompSci']
+for index, course in enumerate(courses):
+  print(index,course)
+#if instead we want to start at 1:
+courses=['History','Math','Physics','CompSci']
+for index, course in enumerate(courses,start=1):
+  print(index,course)
+
+#Turn our List int Strings: JOIN
+courses=['History','Math','Physics','CompSci']
+course_str=', '.join(courses)
+print(course_str)  #History, Math, Physics, CompSci
+
+course_str='_'.join(courses)
+print(course_str)  #History_Math_Physics_CompSci
+
+#Turn a String back into a List: SPLIT
+courses=['History','Math','Physics','CompSci']
+course_str='_'.join(courses)
+print(course_str)  #History_Math_Physics_CompSci
+new_list=course_str.split('_')  #['History', 'Math', 'Physics', 'CompSci']
+
+abc='with three words'
+stuff=abc.split()
+print(stuff)  #['with', 'three', 'words']
+
+#There is a function that returns a list of numbers: range()
+friends=['Joseph','Glenn','Sally']
+for i in range(len(friends)):
+    friend=(friends[i])
+    print('Happy New Year:',friend)
+
+a=[1,2,3]
+b=[4,5,6]
+c=a+b
+print(c)  #[1,2,3,4,5,6]
+#1:
+total=0
+count=0
+while True:
+  inp=input('Enter a number:')
+  if inp=='done': break
+  value=float(inp)
+  total=total+value
+  count=count+1
+average=total/count
+print('Average:', average)
+#2:
+numlist=list()
+while True:
+  inp=input('Enter a number:')
+  if inp=='done': break
+  value=float(inp)
+  numlist.append(value)
+average=sum(numlist)/len(numlist)
+print('Average:', average)
+#==> if there was 1 million or billion numbers, they actually all have to be stored in the memory simultaneously (2), whereas here(1), it's actually doing the calculation of the billion numbers and not using so much memory!
+##########################################################
+TUPLES: one major difference: lists are mutable but tuples are immutable
+list_1=['History','Math','Physics','CompSci']
+list_2=list_1
+print(list_1)  #['History', 'Math', 'Physics', 'CompSci']
+print(list_2)  #['History', 'Math', 'Physics', 'CompSci']
+list_1[0]='Art'
+print(list_1)  #['Art', 'Math', 'Physics', 'CompSci']
+print(list_2)  #['Art', 'Math', 'Physics', 'CompSci']
+
+tuple_1=('History', 'Math', 'Physics', 'CompSci')
+tuple_2=tuple_1
+print(tuple_1)  #('History', 'Math', 'Physics', 'CompSci')
+print(tuple_2)  #('History', 'Math', 'Physics', 'CompSci')
+#tuple_1[0]='Art'==>ERROR!!!
+#print(tuple_1)==>ERROR!!!
+#print(tuple_2)==>ERROR!!!
+#===>Tuples are IMMUTABLE!!!
+#tuples are more efficient. Since python does not have to build tuple structure to be modifiable, they are simpler and more efficient than lists in terms of memory use and performance.
+#The reason that it is not modifiable is for efficiency. They takes up less storage and are quicker to access
+#So in our program when we are making "temporary variables" we prefer tupels over lists!
+#Tuple doesn't have as many methods as a list. We can't append/remove,...we can loop through tuples, we can access values,... except for what mutates the list like: sort()/append()/reverse()
+#Tuples and Assignment: we can also put a tuple on the left-hand side of an assignment statement
+(x,y)=(4,'Fred')  #we can even omit the parantheses: x,y=4,'Fred'
+print(y)   #Fred
+
+#############################################################
+#SETS
+cs_course={'History', 'Math', 'Physics', 'CompSci'}
+print(cs_course)  #THE ORDER CAN CHANGE WITH EACH EXECUTION! sets really don't care about order!
+
+#The main uses for a set is either to test whether a value is part of a set and also it is used a lot to remove duplicate values==>because sets throw away duplicates
+cs_course={'History', 'Math', 'Physics', 'CompSci','Math'}
+print(cs_course)  #{'CompSci', 'Math', 'History', 'Physics'}
+
+#it is uses to test whether a value is part of a set: a Membership Test: Set do this a lot more efficiently than lists & tuples. We could do that with lists or tuples but sets are optimized for this
+print('Math' in cs_course)  #True
+
+#somthing else really useful that sets can quickly do is: determine what values they either share or don't share with other sets
+cs_course={'History', 'Math', 'Physics', 'CompSci'}
+art_course={'History', 'Math', 'Art', 'Design'}
+print(cs_course.intersection(art_course))  #{'History', 'Math'}
+print(cs_course.difference(art_course))  #{'Physics', 'CompSci'}
+#Combine both of these sets:
+print(cs_course.union(art_course))  #{'CompSci', 'Design', 'Physics', 'History', 'Math', 'Art'}
+#For these particular problems sets are much more efficient than lists or tuples
+
+#HOW to create empty lists, tuples and sets:
+empty_list=[]  #OR
+emplty_list=list()
+
+empty_tuple=()  #OR
+empty_tuple=tuple()
+
+empty_set=set()
+#empty_set={}==>!!This isn't right! It's a DICT!!
