@@ -1,0 +1,103 @@
+#'Bobby's World'==> Error!==> "Bobby's World" Or 'Bobby\'s World'
+
+# How many characters are in our string?:
+message='Hello World'
+print(len(message))
+#to access the first character of our string:
+print(message[0])
+print(message[O:5])   #the first charater(0) is inclusive, but the last one:(5) NOT inclusive
+# =print(message[:5])
+
+print(message.lower())
+print(message.upper())
+
+print(message.count('Hello'))
+print(message.count('l'))
+print(message.find('World')) #6: 'World' starts at the 6th index of our message variable
+print(message.find('Universe')) #-1
+
+message.replace('World','Universe')
+new_message=message.replace('World','Universe')
+print(new_message)
+
+greeting='Hello'
+name='Michael'
+message=greeting+''+name+'. Welcome!'
+print(message)
+#Better way:
+message='{}, {}. Welcome!'.format(greeting, name)
+
+#fstring: to make string formating as simple as possible
+message=f'{greeting}, {name.upper()}. Welcome!'
+
+first_name='Shabnam'
+last_name='Razmjooei'
+win_var=10
+build_num=194235.2354353
+message=f'{first_name} is using windows {win_var} Build: {build_num:0.2f}'
+
+#Show us all of the attributes and methods that we have access to with that variable:
+name='Michael'
+print(dir(name))
+#To see more information:
+print(help(str))
+# If you know that you had a certain method available to you but you couldn't remember exactly what it does:
+print(help(str.lower()))
+
+#LOOPING through strings:
+fruit='banana'
+index=0
+while index<len(fruit):
+  letter=fruit(index)
+  print(index, letter)
+  index=index+1
+
+#LOOPING and Counting
+word='banana'
+count=0
+for letter in word:
+  if letter=='a':
+    print(letter)
+    count=count+1
+print(count)
+
+fruit='banana'
+'n' in fruit  #True
+'m' in fruit  #False
+if 'a' in fruit:
+  print('Found it!')
+
+#String Comparison:
+if word=='banana':
+  print('Alright, bananas.')
+if word<'banana':
+  print('Your word, '+word+' ,comes before banana.')
+elif word>'banana':
+  print('Your word, '+word+' ,comes after banana.')
+else
+  print('Alright, bananas.')
+
+#Stripping Whitespace:
+greet='  Hello Bob  '
+greet.lstrip()  #Throws away the spaces in the beginning at left
+greet.rstrip()  #Throws away the spaces on the far end
+greet.strip()  #Takes both sides
+
+#Prefixes:
+line='Please have a nice day'
+line.startswith('Please')  #True
+line.startswith('p')  #False
+
+data='From Stephen.marquard@uct.ac.za Sat Jan 5 09:14:16 2008'
+atpos=data.find('@')
+sppos=data.find('',atpos)
+host=[atpos+1:sspos]
+print(host)
+
+#Exercise 5: Take the following Python code that stores a string:
+#str = 'X-DSPAM-Confidence:0.8475'
+#Use find and string slicing to extract the portion of the string after the colon character and then use the float function to convert the extracted string into a floating point number.
+
+str = 'X-DSPAM-Confidence:0.8475'
+a=str.find(':')
+print(float(str[a+1:]))
