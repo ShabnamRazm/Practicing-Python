@@ -1,0 +1,192 @@
+#handle=open(filename,mode)
+fhand=open('mbox.txt'.'r')
+
+fhand=open('mbox.txt')0
+print(fhand)  #it doesn't print the lines that are in file. Allows you to get to the file, it's nor the file itself and it's not the data in the file.
+
+#newline character \n
+stuff='x\ny'
+print(len(stuff)) #3
+
+xfile=open('mbox.txt')
+for cheese in xfile:
+  print(cheese)  #print the 1st line, the 2nd line,...:getting it line by line
+
+#Counting lines in a file:
+fhand=open('mbox.txt')
+count=0
+for line in fhand:
+  count=count+1
+print('Line Count:',count)
+
+#Reading the whole file:  #Depending on the size of the file
+fhand=open('mbox_short.txt')
+inp=fhand.read()
+print(len(inp))
+print(inp[:20])
+
+#Searching Through a File:
+fhand=open('mbox_short.txt')
+for line in fhand:
+  line=line.rstrip()    #Get rid of white space from the right end of the string
+  if line.startwith('From:'):
+    print(line)
+#==> There are a couple of ways to do a loop like this:
+#Skipping with Continue:
+fhand=open('mbox_short.txt')
+for line in fhand:
+  line=line.rstrip()
+  if not line.startwith('From:'):
+    continue
+  print(line)
+#Using in to select lines:
+fhand=open('mbox_short.txt')
+for line in fhand:
+  line.line.rstrip()
+  if not '@uct.ac.za' in line:
+    continue()
+  print(line)
+
+#read a file and print the contents all in upper case:
+fhand=open('mbox_short.txt')
+for line in fhand:
+  line.line.rstrip()
+  print(line.upper())
+
+#Prompt for file name:
+fname=input('Enter the file name:')
+try:
+  fhand=open(fname)
+except:
+  print('File cannot be opened:',fname)
+  quit()
+count=0
+for line in fhand:
+  if line.startwith('Subject:')
+    count=count+1
+print('There were',count,'Subject lines in',fname)
+
+#File Objects
+#to get a file object:
+f=open('test.txt','r' )  #if you work with files from different directories, then you're going to have to pass the path file into the open command.but since this file is within the same directory as my python file, then I can just pass in the name of the file  
+#the open command allows us to specify whether we want to open this file for reading'r'/writing'w'/appending'a'/reading and writing'r+'. if we don't specify anything: default:opening file for reading
+print(f.name)  #test.txt
+print(f.mode)  #r
+f.close()  #if we open a file, then we need to explicitly close the file when we're done using it. If we don't close the file, then you can ends up with leaks that cause you to run over the macimum allowed file desciptors on your system and your applications could throw an error.
+#open the file using a *CONTEXT MANAGER*: Benefit:allows us to work with files from withing this block and after we exit that block of code, it'll automatically close the file for us. This will also close the file if there are any exceptions that are thrown or anything like that
+with open('test.txt','r' ) as f:
+  pass
+#we have access to this file object variable after we exit the contect manager but the file will just be closed. for example:
+print(f.closed)  #True 
+#eventhough we have access to this variable here, it is closed so it's not like we can read from it:
+print(f.read())  #ValueError 
+
+with open('test.txt','r') as f:
+  f_contents=f.read()
+  print(f_contents)
+#But what if we have an extremely large file that we want to read but we don't want to load all the contents of that file into memory:
+with open('test.txt','r') as f:
+  f_contents=f.readlines()
+  print(f_contents)
+#we get a list of all of the lines in the file
+ with open('test.txt','r') as f:
+  f_contents=f.readline()  #grab the first line of our file
+  print(f_contents)
+#every time that we run f.readline() it gets the next line in our file:
+ with open('test.txt','r') as f:
+  f_contents=f.readline()  #grab the first line of our file
+  print(f_contents, end='')  #end='':it will no longer add that extra new line
+  f_contents=f.readline()  #grab the second line of our file
+  print(f_contents, end='')
+#SO to read all of the content from an extremely large file: (if we read the entire file all at once then we could run out of memory) 
+with open('test.txt','r') as f:
+  for line in f:
+    print(line, end='')
+#if you want more contol over exactly what you're reading from the file:
+with open('test.txt','r') as f:
+  f_contents=f.read()
+  print(f_contents, end='')
+#we can specify the amount of data that we want to read at a time, by passing in the size as an argument:
+with open('test.txt','r') as f:
+  f_contents=f.read(100)
+  print(f_contents, end='')  #print out the first 100 chatacters
+ f_contents=f.read(100)
+  print(f_contents, end='')  #print out the rest of the file, a 100 more characters of the file
+#how are we going to use this technique to read a large file? since we don't know exactly how long the file will be: use some kind of loop tat just iterates over small chunks at a time
+ 
+  f_contents=f.read(size_to_read)
+  #when we hit the end of the file then read will just return an empty string, so:
+  while len(f_contents)>0:
+    print(f_contents,end='')
+#this is an infinite. we're never advancing the contents of the file==>
+    f_contents=f.read(size_to_read)
+
+#to see the current position using f.tell():
+with open('test.txt','r') as f:
+  size_to_read=10
+  f_contents=f.read(size_to_read)
+  print(f.tell())  #10: we're currently at the tenth position of the file
+#we can manipulate our current position using the: Seek Method:
+#what it I wanted that second read to instead start at the begining of the file: we can do this with f.seek() 
+with open('test.txt','r') as f:
+  size_to_read=10
+  f_contents=f.read(size_to_read)
+   print(f_contents,end='')
+  f.seek(0)  #Set our position back to the beginning of the file, so the second time we read in our contents it starts back at the beginning instead of picking up where we left off after the first read
+   f_contents=f.read(size_to_read)
+   print(f_contents)
+#we used seek(0) to start at the beginning but you can use it to change the position to any location that you'd like.
+
+#WRITING to files
+#what happens if we try to write from within a file that we have opened in read mode:
+with open('test.txt','r') as f:
+  f.write('Test')  #TRACEBACK!: when I have a file open in read mode and try to write, we get an error that says that this is not writable==> we HAVE TO have the file open in write mode
+
+with open('test2.txt','w') as f:  
+  f.write('Test')           
+#if the file doesn't exist already, then this will go ahead and create it
+#if the file does exist, then it will overwrite it!!be careful!!! if you don't want to overwrite a file then you can use (a) for appending to the file
+
+with open('test2.txt','w') as f:
+  pass  #I don't actually have to write anything to the file in order to create it, just using the open with the write mode will create the file
+
+with open('test2.txt','w') as f:
+  f.write('Test')
+  f.write('Test')  #it's going to pick up where we left off: (TestTest)
+#use Seek to set the position back to the beginning of the file
+with open('test2.txt','w') as f:
+  f.write('Test')
+  f.seek(0)
+  f.write('Test')
+#Answer: Test  (the second test over wrote the first one)
+#Seek can get a little confusing for f.write; because it doesn't overwrite everything only what it needs to overwrite,For example:
+with open('test2.txt','w') as f:
+  f.write('Test')
+  f.seek(0)
+  f.write('R')   #==> Answer: Rest (R only overwrite the T in test and it didn't delete the rest of the content)
+
+#Create a copy of our file:
+with open('test.txt','r') as rf:
+  with open('test_copy.txt','w') as wf:    #test_copy.txt: doesn't exist yet 
+    for line in rf:
+      wf.write(line)
+
+#copy a large picture file:
+ with open('bronx.jpg','r') as rf:
+  with open('bronx_copy.jpg','w') as wf:    
+    for line in rf:
+      wf.write(line)
+#ERROR:'utf_8' codec can't decode byte 0xff in position 0==> in order to work with images, we're going to have to open these files in binary mode. we are going to be reading and writing bytes instead of working with text
+#in order to work wit these pictures to use binary mode, we can just:
+ with open('bronx.jpg','rb') as rf:
+  with open('bronx_copy.jpg','wb') as wf:    
+    for line in rf:
+      wf.write(line)
+#sometimes you want more control over exactly what you're reading and writing. instead of doing this line by line, let's do this in specific chunck sizes:
+ with open('bronx.jpg','rb') as rf:
+  with open('bronx_copy.jpg','wb') as wf:    
+    chunk_size=4096
+    rf_chunk=rf.read(chunk_size)
+    while len(re_chunk)>0:  
+      wf.write(rf_chunk)    #to keep this from being an infinite loop: I have to read in the next chunck size:
+      rf_chunk=rf.read(chunk_size)
