@@ -1,0 +1,136 @@
+#We are looking for a certain number in our list and once we find it we don't need to continue looping through the rest of our values==> BREAK!
+nums=[1,2,3,4,5]
+for num in nums:
+  if num==3:
+    print('Found!')
+    break
+  print(num)
+#1  2  Found!
+#But what if we wanted to just ignore a value but not break out of the loop completely==> CONTINUE!
+nums=[1,2,3,4,5]
+for num in nums:
+  if num==3:
+    print('Found!')
+    continue
+  print(num)
+#1 2 Found! 4 5
+#Break: get out of this loop  Continue: Stop this iteration, go up back to the top of the loop
+
+while True:
+  line=input('> ')
+  if line[0]=='#':
+    continue
+  if line=='done':
+    break
+  print(line)
+print('Done!')
+
+nums=[1,2,3,4,5]
+for num in nums:
+  for letter in 'abc':
+    print(num,letter)
+
+#There is going to be some times when we just want to go through a loop a certain number of times and there is a built-in-function: RANGE
+#We want to just run through a loop 10 times:
+for i in range(10):
+  print(i)  #0 1 2 3 4 5 6 7 8 9  
+#if we don't want to start at zero:
+for i in range(1,11):
+  print(i)  #1 2 3 4 5 6 7 8 9 10
+
+x=0
+while x<10:  
+  print(x)
+  x+=1
+#0 1 2 3 4 5 6 7 8 9
+
+x=0
+while x<10:  
+  if x==5:
+    break
+  print(x)
+  x+=1
+#0 1 2  3  4 
+#To create an infinite loop: WHILE TRUE:
+x=0
+while True:  
+  if x==5:
+    break
+  print(x)
+  x+=1
+#same output: 0 1 2  3  4 
+#It is possible to get stuck in an infinite loop
+
+#What is the Largest Number?
+largest_so_far=-1
+print('Before:', largest_so_far)
+for the_num in [9,41,12,3,74,15]:
+  if the_num>largest_so_far:
+    largest_so_far=the_num
+  print(largest_so_far,the_num)
+print('After:',largest_so_far)
+
+#Counting in a loop:
+zork=0
+print('Before:',zork)
+for thing in [9,41,12,3,74,15]:
+  zork=zork+1
+  print(zork,thing)
+print('After:',zork)
+
+#Summing in a loop:
+zork=0
+print('Before:',zork)
+for thing in [9,41,12,3,74,15]:
+  zork=zork+thing
+  print(zork,thing)
+print('After:',zork)
+
+#Finding the AVERAGE in a loop:
+count=0
+sum=0
+print('Before:',count,sum)
+for value in [9,41,12,3,74,15]:
+  count=count+1
+  sum=sum+value
+  print(count,sum,value)
+print('After',count, sum, sum/count)
+
+#Search using a Boolean variable:
+found=False
+print('Before',found)
+for value in [9,41,12,3,74,15]:
+  if value==3:
+    found=True
+    #break: to make this loop more efficient
+  print(found,value)
+print('After',found)
+
+#How to find the smallest value:
+smallest=None
+print('Before')
+for value in [9,41,12,3,74,15]:
+  if smallest is None:
+    smallest=value
+  elif value<smallest
+    smallest=value
+  print(smallest,value)
+print('After:',smallest)
+#instead of (if & elif) we could say: if smallest is None or value<smallest:  smallest=value
+
+#Write a program which repeatedly reads numbers until the user enters “done”. Once “done” is entered, print out the total, count, and average of the numbers.
+#If the user enters anything other than a number, detect their mistake using try and except and print an error message and skip to the next number.
+num=0
+tot=0.0
+while True:
+  sval=input('Enter a number:')
+  if sval=='done':
+    break
+  try:
+    fval=float(sval)
+  except:
+    print('Invalid Input')
+    continue
+  num=num+1
+  tot=tot+fval
+print(tot,num,tot/num)
