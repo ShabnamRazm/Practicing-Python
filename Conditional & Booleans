@@ -1,0 +1,162 @@
+a=[1,2,3]
+b=[1,2,3]
+print(a==b)  #True
+print (a is b)  #False, these are two different objects in memory
+print(id(a))  #2249270837632
+print(id(b))  #2249270838080==> The ids are Different!
+a=[1,2,3]
+b=a
+print(id(a))  #3105760365184 
+print(id(b))  #3105760365184
+print(a is b)  #True
+print(id(a)==id(b))  #True
+print(a==b)  #True
+
+0==0.0  #True
+0 is 0.0  #False, because these two are the same value, are not the same type
+#is: equality in both the type and the value of the variable, just use in BOOLEANS(T/F) and NONETYPE (NOT in int, float, strings)
+
+if x<2:
+  print('small')
+elif x<10:
+  print('medium')
+else:
+  print('large')
+print('All done')
+#:it DOES NOT check the second question until it knows the first question is False
+#We can even not have "else":
+x=50
+if x<2:
+  print('small')
+elif x<10:
+  print('medium')
+print('All done')
+
+condition=Flase  #OR None/0/''/()/[]/{}
+if condition:
+  print('Evaluate to  True')
+else:
+  print('Evaluate to  False')
+#Answer:Evaluate to  False, Everything else is going to Evaluate to  True:10/'Test'
+
+#Using Try/Except Blocks for Error Handling: if we can anticipate sections of our code that might throw an Error or an Exception, then we can use this Try/Except Blocks to handle them in the way that we want. 
+rawstr=input('Enter a number:')
+try:
+  ival=int(rawstr)
+except:
+  ival=-1
+if ival>0:
+  print('Nice Work')
+else:
+  print('Not a number')
+
+#Rewrite your pay computation to give the employee 1.5 times the hourly rate for hours worked above 40 hours.
+#Rewrite your pay program using try and except so that your program handles non-numeric input gracefully by printing a message and exiting the program.
+sh=input("Enter Hours: ")
+sr=input("Enter Rate: ")
+try:
+  fh=float(sh)
+  fr=float(sr)
+except:
+  print("Error, please enter numeric input")
+  quit()
+if fh>40:
+  reg=fr*fh
+  otp=(fh-40.0)*(fr*0.5)
+  xp=reg+otp
+else:
+  xp=fh*fr
+print("Pay:",xp)
+
+try:
+  f=open('testfile.txt')
+except Exception:
+  print('Sorry. This file does not exist')
+#When we ran this code outside of the try & except block we got a FileNotFoundError and we want to be as specific as possible when we catch our exceptions; because the goal of Try/Except isn't to just get around all of the exceptions and errors that we could run into.
+#It's meant to catch the errors that we expect and handle them properly. So this GENERAL Exception is not only going to catch FileNotFoundError. For example: (the name is correct here)
+try:
+  f=open('test_file.txt')
+  var=bad_var
+except Exception:
+  print('Sorry. This file does not exist')
+#Answer: Sorry. This file does not exist
+
+try:
+  f=open('test_file.txt')
+  var=bad_var
+except FileNotFound:  #OR: except FileNotFound as e:
+  print('Sorry. This file does not exist')  #OR: print(e)
+#Answer:NameError:name 'bad_var' is not defined.
+
+try:
+  f=open('test_file.txt')
+  var=bad_var
+except FileNotFound: 
+  print('Sorry. This file does not exist') 
+except Exception:  #OR: except Exception as e:
+  print('Sorry, somthing went wrong')  #OR: print(e)
+#Answer: Sorry, somthing went wrong
+#If you do handle multiple exceptions like this, be sure that you are putting the more specific exceptions at the top and more general ones the further that you go down.
+#Because if I suppossed to put this general exception at the top, then it's always going to hit that one first and I'll never get to the FileNotFoundError
+#we are printing out some custom messages here but if I wanted to just print out the exception that it throw, I will do like this: (#OR: except exception as e:)
+#Else and Finally Blocks:
+#ELSE: it runs code that needs to be executed if the try clause doesn't raise an exception.
+
+try:
+  f=open('test_file.txt')  #filename correct!
+except FileNotFound as e:
+  print(e) 
+except Exception as e:
+  print(e)
+else:
+  print(f.read())
+  f.close()
+#Answer: Test File Contents!
+#because we have the correct file name here, since it doesn't throw an exception, it's going to execute the code that's within the else clause.
+#Why don't you put those else block contents into try blocks?!
+#you could do that but we want to be specific about what it is that we're actually trying to catch here. so if I move this code up here, then it may throw an exception and we may catch hat exception but it may be sth that we weren't trying to catch and it may just be an accident so it's better to use:ELSE
+
+#The else clause only runs if we don't throw an exception but the FINALLY runs no matter what happens, whether the code was successful or whether we throw an exception.
+#This is useful for making sure that you release certain resources regardless of what happened in the try/except. For example:say you are working with a database or... then this would be an area where you could close down the database at this step
+
+try:
+  f=open('test_file.txt')  #filename correct!
+except FileNotFound as e:
+  print(e) 
+except Exception as e:
+  print(e)
+else:
+  print(f.read())
+  f.close()
+finally:
+  print("Executing Finally...")
+#Runs else and finally. if we write a wrong file name: it will throw an exception(FileNotFound) and also executes Finally.
+
+#You can raise exceptions on your own if you need to do that, so it doesn't have to be sth that python would have cut on its own. For example:
+try:
+  f=open('currupt_file.txt')
+  if f.name=='currupt_file.txt'):
+    raise Exception
+except FileNotFound as e:
+  print(e) 
+except Exception as e:
+  print('Error!')
+else:
+  print(f.read())
+  f.close()
+finally:
+  print("Executing Finally...")
+#Answer: Error!   Executing Finally...
+
+try:
+  f=open('currupt_file.txt')
+except FileNotFound as e:
+  print(e) 
+except Exception as e:
+  print('Error!')
+else:
+  print(f.read())
+  f.close()
+finally:
+  print("Executing Finally...")
+#Answer: without that intentional roor, the file runs normally: Currupt File!  Executing Finally...
