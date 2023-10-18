@@ -1,0 +1,90 @@
+#within our file 'my_module.py':
+print('Imported my module...')
+test='Test String'
+def find_index(to_search,target):
+  '''Find the index of a value in a sequence'''
+    for i, value in enumerate(to_search):
+      if value==target:
+        return i
+      return -1
+#let's say we wrote this function and that we want to use this in an other modules or scripts==>
+#within the file: 'intro.py': we want to use that find_index function from my_module, which is in the same directory
+import my_module
+courses=['History','Math','Physics','CompSci']
+#we just can't call our find_index function, instead, we have to type the module name first and then what we want to grab from that module:
+index=my_module.find_index(courses,'Math')  #courses: the list that we want to search  , 'Math': target
+print(index)    #1
+
+#if we're using this find_index function multiple times throughout our script==> it might get a little old and take up a lot of room to keep typing "my_module.find_index" every where
+#==> we can specify a name to make the module name shorter: 
+import my_module as mm
+courses=['History','Math','Physics','CompSci']
+index=my_module.find_index(courses,'Math')
+print(index)
+
+#Is there any way to import the function itself?
+From my_module import find_index#, test      #We can use that find_index function anywhere==> cuts down on typing/ it only gives us access to that find_index function and not everything else in that my_module, if we want import that variable:#
+courses=['History','Math','Physics','CompSci']
+index=find_index(courses,'Math')
+print(index)
+#print(test)
+
+#we can even do this: But it's not recommended since it is not really readable:
+From my_module import find_index as fi, test 
+courses=['History','Math','Physics','CompSci']
+index=fi(courses,'Math')
+print(index)
+print(test)
+
+#we can import everything by: From my_module import *   But I don't use this and it's pretty frowned upon.Now we can't tell what come from that module and what didn't. so if we're having problems with this fine_index function and we might want to track down where that function came from/ defined, with this(*)method it's not obvious that it came from that module that was imported==> it makes it harder to track down a problem
+#when we import a module it checks multiple locations and the locations that it checks is within a list called: sys.path  we can see this list if we import that sys module==>
+from my_module import find_index and test
+import sys
+courses=['History','Math','Physics','CompSci']
+index=fi(courses,'Math')
+print(index)
+print(test)
+print(sys.path)  #the first value is just the directory where I'm currently running the script from
+                 #then, adds directions listed in the python path environment variable
+                 #then, adds the standard library directions
+                 #then, adds the site package directory for third-party packages
+#what it looks like when the module that we want to import isn't in the same directory as the script that we're trying to import it from?
+#1) we can manually add that directory to sys.path list:
+import sys
+sys.path.append('#the directory of the module')
+#But this isn't the best looking approach==>Next approach:
+#2)python path environment variable:
+#MAC: open cmd: we can set environment variables by adding them to the...nano~/.bash_profile  export PYTHONPATH="#the directory of the module">ctrl X and the Y to save>enter>restart cmd  ==> python>import sys>sys.path: we can see that after our current directory that we have, the directory that we added there and the reason that it's added is becaus we added it to our python path environment variable 
+#Set environment variable on Windows: right click on Computer>properties>advanced system settings>environment variables> (User variables for Admin) New..>Variable name: PYTHONPATH, variable value:#the directory of the module    cmd>python>import my_module   import sys>sys.path:after our current directory we can see that our directory that we added to our path is the second one here
+
+
+#Random Module: is part of the STANDARD LIBRARY
+import random
+courses=['History','Math','Physics','CompSci']
+random_course=random.choice(courses)
+print(random_course)  #it gives us random output:Math/Compsci/...
+
+#Perform some common mathematical operations:
+import math
+rads=math.radians(90)  #convert 90 into radians
+print(rads)    #if we want it's sin:
+print(math.sin(rads))
+
+import datetime
+import calendar
+today=datetime.date.today()
+print(today)  #gives us today's date
+print(calendar.isleap(2017))  #False
+print(calendar.isleap(2020))  #True
+
+import os  #access tp the underlying operating system
+#what directory we are currently within this script:
+print(os.getcwd())  #cwd:current working directory: prints out the current working directory where this script is located
+#os module gives us the ability to scan the file system, create files,delete files
+
+#These modules are just python files themselves==> view the location of the module:
+print(os.__file__)
+#prints out the location of this file on our filesystem==> if we open up that python directory where that file lives, then we can see the entire standard library (EXAMPLE: import antigravity:open up a web comic on your machine)
+
+
+
