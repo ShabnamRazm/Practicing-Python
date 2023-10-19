@@ -48,15 +48,14 @@ print(sys.path)  #the first value is just the directory where I'm currently runn
                  #then, adds directions listed in the python path environment variable
                  #then, adds the standard library directions
                  #then, adds the site package directory for third-party packages
-#what it looks like when the module that we want to import isn't in the same directory as the script that we're trying to import it from?
+#what it looks like when the module that we want to import isn't in the same directory as the script that we're trying to import it from?==>ModuleNotFoundError
 #1) we can manually add that directory to sys.path list:
 import sys
-sys.path.append('#the directory of the module')
-#But this isn't the best looking approach==>Next approach:
-#2)python path environment variable:
-#MAC: open cmd: we can set environment variables by adding them to the...nano~/.bash_profile  export PYTHONPATH="#the directory of the module">ctrl X and the Y to save>enter>restart cmd  ==> python>import sys>sys.path: we can see that after our current directory that we have, the directory that we added there and the reason that it's added is becaus we added it to our python path environment variable 
-#Set environment variable on Windows: right click on Computer>properties>advanced system settings>environment variables> (User variables for Admin) New..>Variable name: PYTHONPATH, variable value:#the directory of the module    cmd>python>import my_module   import sys>sys.path:after our current directory we can see that our directory that we added to our path is the second one here
-
+sys.path.append('#the directory of the module')  #now we are able to import that module and run that code
+#But this isn't the best looking approach, because we're appending this directory before our other imports, and also if we were to import our module and we had this manually harde-coded in multiple locations and we have to change all of those ==>Next approach:
+#2)python path environment variable :
+#MAC: open terminal: we can set environment variables by adding them to the...nano~/.bash_profile  export PYTHONPATH="#the directory of the module">ctrl X and then Y to save>enter>restart terminal==> python>(import my_module==> Worked)because:import sys>sys.path: we can see that after our current directory that we have, the directory that we added there and the reason that it's added is because we added it to our python path environment variable 
+#Set environment variable on Windows: right click on Computer>properties>advanced system settings>environment variables> (User variables for Admin) New..>Variable name: PYTHONPATH, variable value:#the directory of the module    cmd>python>import my_module  (import successfully, because:) import sys>sys.path:after our current directory we can see that our directory that we added to our path is the second one here
 
 #Random Module: is part of the STANDARD LIBRARY
 import random
@@ -68,23 +67,20 @@ print(random_course)  #it gives us random output:Math/Compsci/...
 import math
 rads=math.radians(90)  #convert 90 into radians
 print(rads)    #if we want it's sin:
-print(math.sin(rads))
+print(math.sin(rads))  #1
 
 import datetime
 import calendar
 today=datetime.date.today()
-print(today)  #gives us today's date
+print(today)  #gives us today's date: 2023-10-19
 print(calendar.isleap(2017))  #False
 print(calendar.isleap(2020))  #True
 
-import os  #access tp the underlying operating system
-#what directory we are currently within this script:
+import os  #access to the underlying operating system
+#what directory we are currently with this script:
 print(os.getcwd())  #cwd:current working directory: prints out the current working directory where this script is located
 #os module gives us the ability to scan the file system, create files,delete files
 
 #These modules are just python files themselves==> view the location of the module:
 print(os.__file__)
 #prints out the location of this file on our filesystem==> if we open up that python directory where that file lives, then we can see the entire standard library (EXAMPLE: import antigravity:open up a web comic on your machine)
-
-
-
