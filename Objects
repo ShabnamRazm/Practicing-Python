@@ -1,0 +1,85 @@
+#class- A template
+#Method or Message- A define capability of a class/ A function within a class
+#Field or Attribute- A bit of data in a class/ A variable within a class
+#Object or Instance- A particular instance of a class/ object is once we construct a class we get back an object
+#Conctructor-Code that runs when an object is created/ Conctructor is a bit of code that sets up our object/instance when it first is created
+#Inheritance- The ability to extend a class to make a new class
+
+#y.rstrip()      y:object  rstrip:method  .:object look up operator 
+
+class PartyAnimal:    #PartyAnimal:name of the class, this is a template for making PartyAnimal objects. class is a reserved word
+  x=0                 #Each PartyAnimal object has a bit of data 
+  def party(self):  #This is a Method because it lives inside of a class, Each PartyAnimal object has a bit of code 
+    self.x=self.x+1
+    print('So far',self.x)
+an=PartyAnimal()      #construct a PartyAnimal object and store in an
+an.party()            #Tell the an object to run the party() code within it.
+an.party()            #== PartyAnimal.party(an): it's calling the party method within the PartyAnimal class and passing the instance (an) as the first parameter
+an.party()            #when we call the party method, takes this an, and pass it as the first parameter, which is used as self
+#==> So self ends up being an alias of an, each time these are called, now if we make a different variable as a second object works a little bit differently ==>constructing the object and then associating it with this an variable
+#Answer: So far 1    So far 2    So far 3    
+#we have a PartyAnimal class, we construct it and store it in an==> an is a variable that contains an object of type PartyAnimal:
+print("Type", type(an))  #ClASS
+print("Dir", dir(an))  #you'll see a bunch of underscore things..eventually you see two things that you've put in it, one is method 'party', and the other is the Field or Attribute 'x'==> you can say:an.x or an.party : Because this dot is the object lookup operator, that says lookup in the object an the thing x or party
+
+#Object Lifecycle:
+#Constructor: much more commonly used than Destructor
+class PartyAnimal:
+  x=0
+  def__init__(self):    #pass in the instance of the object self
+    print('I am constructed.')
+  def part(self):
+    self.x=self.x+1
+    print('So far',self.x)
+  def__del__(self):
+    print('I am destructed.', self.x)
+an=PartyAnimal()    #I am constructed.
+an.party()          #So far 1
+an.party()          #So far 2
+an=42               #we're gonna destroy this variable by throwing away,an no longer points at that object. an's gonna point to 42 so we're gonna sort of overwite an and put 42 in it, and at that point python's like oh, this whole little object that I created somewhere it's out here, it's vaporizing it, and trowing it away, so before this line completes, it actually calls our destructor on our behalf, so that message comes out:  
+                    #I am destructed. 42    so we are allowed as the builder of these objects to add these little chunks of code that says: I wanna be involved at the moment this object is created & I wanna be involved at the moment this object is destroyed 
+print('an contains',an)  #an contains 42    an is no longer a partyanimal, an is now an integer. it's gone, it's been created, it was used and then it was destroyed
+
+#Multiple instances of the same  class sitting in different variables:
+class PartyAnimal:
+  x=0
+  name=""
+  def__init__(self,z):  # this time we're going to add a parameter onto the constructor. So the self comes in sort of automatically as the object is being constructed, but if we put a parameter on the constructor call(which is this party animal call seeing below: s=PartyAnimal("Sally"))then this sally comes in as z variable. SO self is the object itself and z, this first parameter is whatever parameter we put here(like sally).Every thing we have done so far has no parameter but now we have a parameter here 
+    self.name=z
+    print(self.name,"constructed")
+  def party(self):
+    self.x=self.x+1
+    print(self.name,"party count",self.x)
+s=PartyAnimal("Sally")  #when we call this constructor, name is no longer blank:Sally==> self.name=Sally has been constructed ==> that object is now constructed and we put it in the variable s 
+s.party()               #And then we call the party method on that 
+j=PartyAnimal("Jim")    #And we contruct a different one ==> z=Jim
+j.party()
+s.party()
+#==> We have TWO independent instances/objects: one in the variable s and one in the variable j, and they have separate copies of their instance variables/object fields
+
+#Inheritance
+class PartyAnimal:
+  x=0
+  name=""
+  def__init__(self,nam): 
+    self.name=nam
+    print(self.name,'constructed')
+  def party(self):
+    self.x=self.x+1
+    print(self.name,'party count',self.x)
+class FootballFan(PartyAnimal):        #making a new class,FootballFan, and it inherits everything that is in PartyAnimal: x,name,party, all those methods and data    
+  points=0                             # FootballFan, in addition to all those variables, has points and it has a 
+  def touchdown(self):                 #touchdown method 
+    self.points=self.points+7
+    self.party()
+    print(self.name,"Points",selfpoints)
+s=PartyAnimal('Sally')    #constructs an object and then stores that in s
+s.party()
+j=FootballFan('Jim')      #FootballFan has no __init__,  that actually uses__init__from 
+j.party()                 #adds 1 to x
+j.touchdown()             #adds 7 to points, and calls party==>adds 1 to x==>x=2
+
+#x='Hi'  :that's an object
+#x.upper :you were calling an upper method
+#fh=open...: this thing you're getting back, that's an object
+#fh.read  :you were calling a read method in th dot operator
