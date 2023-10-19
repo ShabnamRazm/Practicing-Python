@@ -1,0 +1,95 @@
+li=[9,1,8,2,7,3,6,4,5]
+s_li=sorted(li)  #sorted Function: **RETURNS A NEW SORTED LIST**==>that's why we can set it to a new variable
+print('Sorted Variables:\t',s_li)  #Sorted Variables:        [1, 2, 3, 4, 5, 6, 7, 8, 9]  ==>sort in ascending order
+print('Original Variables:\t',li)  #Original Variables:      [9, 1, 8, 2, 7, 3, 6, 4, 5]  ==>my original is still the jumbled unsorted group of numbers
+
+#what if I wanted to sort that original list of numbers without creating a new variable?  ==>USE sort Method on the list: **SORT THE LIST IN PLACE and returns None
+li=[9,1,8,2,7,3,6,4,5]
+s_li=sorted(li)
+print('Sorted Variables:\t',s_li)
+li.sort()
+print('Original Variables:\t',li)
+==>Answer:  #Sorted Variables:        [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            #Original Variables:      [1, 2, 3, 4, 5, 6, 7, 8, 9]
+#**:
+li=[9,1,8,2,7,3,6,4,5]
+s_li=li.sort()
+print('Sorted Variables:\t',s_li)  #Sorted Variables:    None 
+
+#what if I wanted these to be in descending order:
+li=[9,1,8,2,7,3,6,4,5]
+s_li=sorted(li, reverse=True)
+print('Sorted Variables:\t',s_li)  #Sorted Variables:        [9, 8, 7, 6, 5, 4, 3, 2, 1]
+li.sort(reverse=True)  #we can also use this exact parameter with the sort method
+print('Original Variables:\t',li)  #Original Variables:      [9, 8, 7, 6, 5, 4, 3, 2, 1]
+
+#why would I want to choose the sorted function over the sort method? because it gives us more flexibility, we can pass in any iterable as apposed to the sort method which workd specifically on lists so:
+tup=(9,1,8,2,7,3,6,4,5)
+#tup.sort() ==>ERROR!! tuples doesn't have a sort method!==>use sort function :)
+s_tup=sorted(tup)
+print('Tuple\t',s_tup)  #Tuple    [1, 2, 3, 4, 5, 6, 7, 8, 9]  ==>our s_tup variable is a list of the values in our tuples that are now sorted
+
+di={'name':'Corey','job':'programming','age':None,'os':'Mac'}
+s_di=sorted(di)
+print('Dict\t',s_di)  #Dict     ['age', 'job', 'name', 'os'] ==>Just sort the keys: returned a list with the sorted keys
+
+li=[-6,-5,-4,1,2,3]
+s_li=sorted(li)
+print(s_li)  #[-6, -5, -4, 1, 2, 3]
+#but what if I want to sort these based on their absolute values?:with out sorted here we can pass in a key parameter
+li=[-6,-5,-4,1,2,3]
+s_li=sorted(li,key=abs)
+print(s_li)  #[1, 2, 3,-4,-5,-6]  :runs each element through this absolute value function before it makes the comparison
+
+#Key parameter is extremely useful when you're sorting objects with named attributes:
+
+class Employee():
+  def __init__(self,name,age,salary):
+    self.name=name
+    self.age=age
+    self.salary=salary
+  def __repr__(self):  #repr method: tells python how we want this function represented when it's printed out to the screen
+    return'({}.{},${})'.format(self.name,self.age,self.salary)
+e1=Employee('Carl',37,70000)
+e2=Employee('Sarah',29,80000)
+e3=Employee('John',43,90000)
+employees=[e1,e2,e3]  #put all three of these employees into a list
+#I want sort these based on a specific attribute. if I try to sort these without a key, then it's really going to know how to sort them, so==>
+#s_employees=sorted(employees)  ==> TypeError: unorderable types==> we need to use a key to sort  these on and I'm gonna write a custom function in order to sort these 
+#key takes a function that takes each element of our list and returns what we want to sort on. with the absolute value example that I used earlier I was able to use a built-in function for the key, but for this example we need to write a custom function
+def e_sort(emp):
+  return emp.name   #sort based on the employees name. if I wanted to sort these based on the employees age/salary: return emp.age/salary
+s_employees=sorted(employees,key=e_sort)  #s_employees=sorted(employees,key=e_sort, reverse=True)
+print(s_employees)  #[(Carl.37,$70000), (John.43,$90000), (Sarah.29,$80000)]  :it returns all of our employees based on their name
+
+#if you have a complicated sort function, then it's probably best to break out these functions into seperate functions like this,but with lambda functions sth this short would be easy to turn into a lambda function so instead of key=e_sort==>key=lambda e:e.name a way to quickly write an anonymous function
+class Employee():
+  def __init__(self,name,age,salary):
+    self.name=name
+    self.age=age
+    self.salary=salary
+  def __repr__(self): 
+    return'({}.{},${})'.format(self.name,self.age,self.salary)
+e1=Employee('Carl',37,70000)
+e2=Employee('Sarah',29,80000)
+e3=Employee('John',43,90000)
+employees=[e1,e2,e3] 
+s_employees=sorted(employees,key=lambda e:e.name)
+print(s_employees)  #[(Carl.37,$70000), (John.43,$90000), (Sarah.29,$80000)]
+
+class Employee():
+  def __init__(self,name,age,salary):
+    self.name=name
+    self.age=age
+    self.salary=salary
+  def __repr__(self): 
+    return'({}.{},${})'.format(self.name,self.age,self.salary)
+from operator import attrgetter
+e1=Employee('Carl',37,70000)
+e2=Employee('Sarah',29,80000)
+e3=Employee('John',43,90000)
+employees=[e1,e2,e3] 
+s_employees=sorted(employees,key=attrgetter('age'))
+print(s_employees)  #[(Sarah.29,$80000), (Carl.37,$70000), (John.43,$90000)]
+
+#but knowing how to sort with those custom functions is useful since it'll allow you to be a little bit more flexible down the road when you want to sort more complicated items
