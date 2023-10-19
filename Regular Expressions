@@ -1,0 +1,129 @@
+#  ^  matches the BEGINNING of a line
+#  $  matches the END of the like
+#  .  matches ANY characer
+#  \s  matches   WHITESPACE
+#  \S  matches any NON-WHITESPACE character
+#  *  REPEATS a character zero or more times
+#  *?  REPEATS a character zero or more times (non-gready)
+#  +  REPEATS a character one or more times
+#  +?  REPEATS a character one or more times (non-gready)
+#  [aeiou]  matches a single character in the listed SET
+#  [^XYZ]  matches a single character NOT IN the listed SET
+#  [a-z0-9]  the set of characters can include a RANGE
+#  (  indicates where string EXTRACTION is to start
+#  )  indicates where string EXTRACTION is to end
+
+##### Matching #####
+#Using re.search() like find():
+hand=open('mbox_short.txt')
+for line in hand:
+  line=line.rstrip()
+  if line.find('From:')>=0:  #it gives -1 if not found
+    print(line)
+
+import re
+hand=open('mbox_short.txt')
+for line in hand:
+  line=line.rstrip()
+  if re.search('From:',line):  #within the library regular expressions, go find the search function & search for the string 'From:' in the string line
+    print(line)
+
+#Using re.search() like startswith():
+hand=open('mbox_short.txt')
+for line in hand:
+  line=line.rstrip()
+  if line.startswith('From:):
+    print(line)
+
+import re
+hand=open('mbox_short.txt')
+for line in hand:
+  line=line.rstrip()
+  if re.search('^From:',line):
+    print(line)
+
+#Wild-card characters
+# ^X.*:  ^: match the start of the line    X,: : maches itself    .: is a wild card that matches any character    *:any number of times  ==>look for a line that starts with X and then has many characters(.*)zero or more characters followed by a colon
+#Example:  X-DSPAM-Result: Innocent  (Correct)          X-Plane is behind schedule: two weeks (Correct)
+
+#sometimes you want to be more clear on your match, so:
+# ^X-\S+:  ^X- :first two characters of the line must be X-  \S :a non-white space character  + :one or more times  \S+ :one or more non-white characters  followed by a colon(:) which is ust a character
+#Example:  X-DSPAM-Result: Innocent (Correct)    but   X-Plane is behind schedule: two weeks (WRONG)
+#==> we can even have a thing that said I want X-with an Upper case letter to create a more precise...
+
+##### Matching & Extracting ##### 
+#Search gives us a True/False 
+#findall gives us a list of all the strings that match
+
+import re
+x='My 2 favorite numbers are 19 and 42'
+y=re.fndall('[0-9]+',x)    #[0-9]: a set of allowed characters: 0,1,2,3,4,5,6,7,8,9 a signle digit, one character  when + applys to that, which means look for any string that's one or more digits 
+print(y)  #['2','19','42']
+
+y=refinal('[AEIOU]+',x)
+print(y)  #[]  [AEIOU]: one letter  +:one or more  [AEIOU]+:one or more upper-case letter:(AA,EI:match)
+
+## Warning: Greedy Matching
+import re
+x='From: Using the : character'
+y=re.finall('^F.+:',x)  #starts with F (.+)=one or more characters and ends with a colon
+print(y)  # ['From: Using the :']
+#why not 'From:'?==> greedy matching: get the larger of the two
+
+#Non-Greedy Matching
+import re
+x='From: Using the : character'
+y=re.finall('^F.+?:',x)
+print(y)  #['From:']
+
+#Fine-Tuning String Extractions
+x='From stephen.marquard@uct.ac.za Sat Jan 5 09:14:16 2008'
+y=re.findall('\S+@\S+',x)  #one or more non-blank characters, followed by @, and again one or more non-blank characters
+print(y)  # ['stephen.marquard@uct.ac.za']
+#it does it in a greedy manner. If you told it to not be greedy: ['d@u']   
+
+y=re.findall('^From (\S+@\S+)',x)  #we want to match from at the beginning, followed by a space, followed by one or more non-blank characters, followed by @, and again one or more non-blank characters==> if there is no From, it's not going to be looking for that(\S+@\S+)  
+print(y)  # ['stephen.marquard@uct.ac.za']
+#parantheses say start your extraction and end your extraction, without the parantheses, you get the whole ['From stephen.marquard@uct.ac.za']; but with() you match the from but yu only get ['stephen.marquard@uct.ac.za'] 
+#==> you can add these() to make the matching part more precise but without  changing what yu get returned, and you specify what you want to get returned with the parantheses
+
+#Extracting the host name- using Find and String Slicing:
+data='From stephen.marquard@uct.ac.za Sat Jan 5 09:14:16 2008'
+atpos=data.find('a')
+sppos=data.find(' ',atpos)
+host=data[atpos+1:sppos]
+print(host)  #uct.ac.za Sat                    
+
+#The Double Split Pattern:
+word=line.split()
+email=word[1]            #stephen.marquard@uct.ac.za
+pieces=email.split('@')  #['stephen.marquard','uct.ac.za']
+print(pieces[1])         #'uct.ac.za'                       
+
+#THE REGEX VERSION
+import re
+lin='From stephen.marquard@uct.ac.za Sat Jan 5 09:14:16 2008'
+y=re.findall('@([^ ]*)',lin)    # @: look through the string untill you find an @    then lets start extracting( ,and then let's look for non-blank characters[^ ], * zero or more times /and it's a greedy match because we don't have ? after it
+print(y)  # ['uct.ac.za']
+                     
+y=re.findall('^From .*@([^ ]*)',lin)  #We also want to pick the line: stating at the beginning of the line, its going to be a From followed by a space and then followed by any number of characters(.*),followed by an @, and then we're going to start extracting ( , and the we're going to go non-blank characters, and end extracting)                     
+print(y)   # ['uct.ac.za']
+# this has the advantage of being more precise. This allows us to refine it, so it actually does this to lines that we care about  
+
+#we are going to read through and look for lines in a file that has this form: X-DSPAM-Confidence: 0.8475; then we are going to extract this number and then compute the maximum of this
+import re
+hand=open('mbox_short.txt')
+numlist=list()                    
+for line in hand:
+  line=line.rstrip()
+  stuff=re.finall('^X-DSPAM-Confidence: ([0-9.]*)',line)  #looks for lines that start with: X-DSPAM-Confidence:, and there a space, then start extracting (, and then [0-9.]+ one or more digits and dots (greedy), and stop extracting
+  if len(stuff)!=1:continue  #skip all the lines that don't match
+  num=float(stuff[0])                 
+  numlist.append(num)
+print('Maximum:', max(numlist))
+
+#Escape Character: if we want a special regular expression character to just behave normally (most of the time) you prefix it with '\'
+import re
+x='We just received $10.00 for cookies.'
+y=re.finall('\$[0.9.]+',x)  # \$ is a REAL dollar sign, followed by one or more digits or dots: [0-9.]: a set of the list of digit characters, A digit or period, +:At least one or more (greedy matching, non-greedy:['$1']!!)
+print(y)  #['$10.00]                    
